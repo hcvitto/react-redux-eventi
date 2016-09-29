@@ -10,6 +10,7 @@ export const DELETING_EVENTO = 'DELETING_EVENTO';
 export const DELETED_EVENTO = 'DELETED_EVENTO';
 export const SAVING_EVENTO = 'SAVING_EVENTO';
 export const SAVED_EVENTO = 'SAVED_EVENTO';
+export const VIEWED_EVENTO = 'VIEWED_EVENTO';
 
 /* eventi
 params: 
@@ -87,8 +88,15 @@ export function fetchEvento(id, titolo) {
 			return axios.get('/react/eventi/api/public/evento/' + id + '/' + titolo)
 				.then(function(response) {
 					//console.log('evento da server');
-					//console.log(response.data);
-					dispatch(receiveNewEvento(id, response.data));
+					let today = new Date();
+					let dd = today.getDate();
+					let mm = today.getMonth()+1; //January is 0!
+					let yyyy = today.getFullYear();
+					if(dd<10) { dd='0'+dd } 
+					if(mm<10) { mm='0'+mm } 
+					today = yyyy + '-' + mm + '-' + dd;
+					const tipo = (response.data[id].data >= today) ? 'inCorso' : 'passati';
+					dispatch(receiveNewEvento(id, response.data, tipo));
 				})
 				.catch(function(error) {
 					// TODO
@@ -99,23 +107,24 @@ export function fetchEvento(id, titolo) {
 		}
 	}
 }
-export const requestEvento = () => ({ type: REQUEST_EVENTO })
-/*export function requestEvento() {
+//export const requestEvento = () => ({ type: REQUEST_EVENTO })
+export function requestEvento() {
 	return {
 		type: REQUEST_EVENTO,
 	}
-}*/
+}
 export function receiveCachedEvento(id) {
 	return {
 		type: RECEIVE_CACHED_EVENTO,
 		id: id,
 	}
 }
-export function receiveNewEvento(id, json) {
+export function receiveNewEvento(id, json, tipo) {
 	return {
 		type: RECEIVE_NEW_EVENTO,
 		id: id,
 		evento: json,
+		tipo: tipo,
 	}
 }
 export function deletingEvento(id) {
@@ -159,9 +168,31 @@ export function savingEvento(evento) {
 			})
 	}
 }
-export function savedEvento(evento) {
+function savedEvento(evento) {
 	return {
 		type: SAVED_EVENTO,
 		evento: evento
+	}
+}
+export function viewingEvento(id, visto) {
+	return function(dispatch, getState) {
+		return axios.get('/react/eventi/api/public/evento/visto/' + id + '/' + visto)
+			.then(function(response) {
+				//console.log('savingEvento');
+				//console.log(response);
+				dispatch(viewedEvento(response.data));
+			})
+			.catch(function(error) {
+				// TODO
+				//dispatch(receiveEventiError(response.data));
+		    	console.log('axios viewingEvento ko');
+		    	console.log(error);
+			})
+	}
+}
+function viewedEvento(res) {
+	return {
+		type: VIEWED_EVENTO,
+		visto: res.visto
 	}
 }

@@ -14,6 +14,11 @@ const Evento = React.createClass({
 			this.props.deleteEvento(this.props.params.id);
 		}
 	},
+	setViewEvento: function(e) {
+		e.preventDefault();
+		const v = (this.props.evento.item.visto == 0) ? 1 : 0
+		this.props.viewEvento(this.props.params.id, v);
+	},
 	render: function() {
 		const evento = this.props.evento.item;
 		let esisteMsg;
@@ -25,9 +30,13 @@ const Evento = React.createClass({
 		let mailMsg;
 		let deleteBtn;
 		let modifyBtn;
+		let vistoBtn;
+
 		if (this.props.evento.backUrl != 'eventi-passati') {
 			deleteBtn = <a className="btn btn-danger pull-right" onClick={ this.cancellaEvento }>Cancella questo evento</a>;
 			modifyBtn = <Link to={{ pathname: '/modifica-evento/' + evento.id + '/' + evento.slug }} className="btn btn-primary pull-right">Modifica questo evento</Link>
+		} else {
+			vistoBtn = <span className="btn btn-primary pull-right" onClick={ this.setViewEvento }>Visto: { (evento.visto == 1) ? 'si' : 'no' }</span>
 		}
 		if (evento.id) {
 			esisteMsg = '';
@@ -82,7 +91,7 @@ const Evento = React.createClass({
 								<div dangerouslySetInnerHTML={{__html: mailMsg}} />
 							</li>
 						</ul>
-						{ deleteBtn }{ modifyBtn }  
+						{ deleteBtn } { modifyBtn } { vistoBtn }   
 					</div>
 				</div>
 			</div>

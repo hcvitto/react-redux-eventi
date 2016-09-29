@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchEvento, deletingEvento } from '../../actions/eventi';
+import { fetchEvento, deletingEvento, viewingEvento } from '../../actions/eventi';
 
 import Dettaglio from '../../components/eventi/dettaglio';
 
@@ -21,7 +21,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadEvento: (id, titolo) => { dispatch(fetchEvento(id, titolo)) },
-    deleteEvento: (id) => { dispatch(deletingEvento(id)) }
+    deleteEvento: (id) => { dispatch(deletingEvento(id)) },
+    viewEvento: (id, visto) => { dispatch(viewingEvento(id, visto)) }
   }
 }
 
