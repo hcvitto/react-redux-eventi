@@ -3,6 +3,7 @@
 * set first select option on empty
 * add setting for DEV / PROD
 * add google map
+* add datepicker
 * check react-router browser-history
 * pagination
 * move selector function to reducer http://redux.js.org/docs/recipes/ComputingDerivedData.html
