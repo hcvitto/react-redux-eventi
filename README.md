@@ -5,3 +5,4 @@
 * add google map
 * check react-router browser-history
 * pagination
+* move selector function to reducer
