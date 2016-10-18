@@ -9,4 +9,4 @@
 * move selector function to reducer http://redux.js.org/docs/recipes/ComputingDerivedData.html
 * check immutable https://facebook.github.io/immutable-js/
 
-### just tested Sublime Text Git package
+### just tested Sublime Text Git package --
